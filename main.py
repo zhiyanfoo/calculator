@@ -10,18 +10,18 @@ def input_mode():
         if parsed.is_valid:
             simplified_exp_tree = simplify(parsed.exp_tree)
             # default command options
-            insert_pos = len(exp_list)
-            numeric = False
-            if "replace" in parsed.commands.keys():
+            insert_pos = len(Evaluater.exp_list)
+            is_numeric = False
+            if "replace" in parsed.commands:
                 insert_pos = parsed.commands["replace"]
-            if "numeric" in parsed.commands.keys():
-                numeric = True
-            evaluater.insert(simplified_exp_tree(), insert_pos)
-            if "printall" in parsed.commands.keys():
-                print(evaluater.return_all(), numeric)
+            if "numeric" in parsed.commands:
+                is_numeric = True
+            evaluater.insert(simplified_exp_tree, insert_pos)
+            if "printall" in parsed.commands:
+                print(evaluater.return_all(), is_numeric)
             else:
-                print(evaluater.return_normal(), numeric)
-            if "quit" in parsed.commands.keys():
+                print(evaluater.return_normal(), is_numeric)
+            if "quit" in parsed.commands:
                 exit(0)
         else:
             print("Syntax Error")
