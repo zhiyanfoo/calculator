@@ -25,11 +25,6 @@ class TestParser:
         parsed = Parser("@printall @numeric")
         assert "printall" in parsed.commands and "numeric" in parsed.commands
 
-    def test_normal():
-        parsed = Parser("@printall (4+ 5*3) / 4")
-        assert "printall" in parsed.commands
-        assert  is_app_equal(int(parsed.exp_tree), 4+5*3/4)
-
 class TestTokenizer:
     def test_empty():
         tokenized = Tokenizer("")
