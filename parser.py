@@ -10,6 +10,16 @@ class Parser:
 
 class Tokenizer:
     def __init__(self, inp):
+        #variable declerations modified from https://github.com/ebbes/MathParser/blob/master/Lexer.py
+        self.operators = ['+', '-', '*', '/', '%', '=', '^']
+        self.digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.digits_decimal_point = ['.'] + self.digits
+        lower = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+        upper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        self.characters = lower + upper
+        self.name_elements = self.characters + self.digits
         tokenize(inp)
 
     def tokenize(self, inp):

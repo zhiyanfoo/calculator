@@ -21,7 +21,7 @@ class TestParser:
         parsed = Parser("@printall 1")
         assert "printall" in parsed.commands and parsed.exp_tree == "1"
         
-    def test_mutiple_commands():
+    def test_multiple_commands():
         parsed = Parser("@printall @numeric")
         assert "printall" in parsed.commands and "numeric" in parsed.commands
 
@@ -30,36 +30,52 @@ class TestTokenizer:
         tokenized = Tokenizer("")
         assert tokenized.commands == dict()
         assert tokenized.tokens == list()
-        assert tokenized.split_input == list()
 
     def test_number():
-        Tokenizer("5")
+        tokenized = Tokenizer("5")
+        tok_types = ["NUMBER"]
+        literals = ["5"]
         assert tokenized.commands == dict()
-        assert tokenized.tokens == ["INTEGER"]
-        assert tokenized.split_input == ["5"]
+        for i in range(len(tokenized)):
+            assert tokenized[i].tok_type == tok_types[i]
+            assert tokenized[i].literal == literals[i]
 
     def test_float():
-        Tokenizer("5.1234")
+        tok_types = ["NUMBER"]
+        literals = ["5.1234"]
+        tokenized = Tokenizer("5.1234")
         assert tokenized.commands == dict()
-        assert tokenized.tokens == ["FLOAT"]
-        assert tokenized.split_input == ["INTEGER"]
+        for i in range(len(tokenized)):
+            assert tokenized[i].tok_type == tok_types[i]
+            assert tokenized[i].literal == literals[i]
     
     def test_mutiple():
-        Tokenizer("\\alpha 5*3")
+        tokenized = Tokenizer("a 5*3")
+        tok_types = ["VARIABLE", "NUMBER", "MULTIPLY", "NUMBER"]
+        literals = ["a", "5", "*", "3"]
         assert tokenized.commands == dict()
-        assert tokenized.tokens == ["VARIABLE", "INTEGER", "MULTIPLY", "INTEGER"]
-        assert tokenized.split_input == ["\\alpha", "5", "*", "3"] 
+        for i in range(len(tokenized)):
+            assert tokenized[i].tok_type == tok_types[i]
+            assert tokenized[i].literal == literals[i]
 
     def test_complex():
-        Tokenizer("5*sin(4)/a")
+        tokenized = Tokenizer("5*sin(4)/a")
+        tok_types = ["NUMBER"]
+        literals = ["5"]
         assert tokenized.commands == dict()
-        assert tokenized.tokens == ["INTEGER", "MULTIPLY", "SIN", "LBRAC", "INTEGER", "RBRAC", "DIVIDE", "VARIABLE"]
+        assert tokenized.tokens == ["NUMBER", "MULTIPLY", "SIN", "LBRAC", "NUMBER", "RBRAC", "DIVIDE", "VARIABLE"]
         assert tokenized.split_input == ["5", "*", "3", "sin", "(", "4", ")", "/", "a"] 
+        for i in range(len(tokenized)):
+            assert tokenized[i].tok_type == tok_types[i]
+            assert tokenized[i].literal == literals[i]
 
     def test_mix():
-        Tokenizer("@replace(1) 5.4*\\beta+ ln(4)^3) ")
+        tokenized = Tokenizer("@replace(1) 5.4*b+ ln(4)^3) ")
+        tok_types = ["5.4", "*", "a", "+", "ln","(", "4", ")", "^","3")]
+        literals = ["NUMBER", "MULTIPLY", "VARIABLE", "PLUS", "LN", "LBRAC", "NUMBER", "RBRAC", "POWER", "NUMBER"]
         assert tokenized.commands == {"replace": 1}
-        assert tokenized.tokens == ["FLOAT", "VARIABLE", "PLUS", "LN", "LBRAC", "INTEGER", "RBRAC", "POWER", "INTEGER"]
-        assert tokenized.split_input == ["5.4", "*", "\\beta", "+", "ln","(", "4", ")", "^","3") ] 
+        for i in range(len(tokenized)):
+            assert tokenized[i].tok_type == tok_types[i]
+            assert tokenized[i].literal == literals[i]
 
 
