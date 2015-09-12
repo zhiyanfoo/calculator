@@ -1,2 +1,5 @@
 *.swp
 __py*
+pip-selfcheck.json
+lib/python*
+bin
