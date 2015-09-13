@@ -9,3 +9,4 @@ def test_remove_ini_whitespace():
 # class TestCommands:
 #     def test_get_commands()
 #         assert main.tokenize_command("@ printall print 5 remove 1-5 insert 3") == [("printall, 
+

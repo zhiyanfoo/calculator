@@ -7,8 +7,6 @@ def remove_ini_whitespace(string):
 def run():
     while True:
         inp = input("> ")
-        stripped_inp = remove_ini_whitespace(inp)
-        
 
     
 
