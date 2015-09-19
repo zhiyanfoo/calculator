@@ -8,20 +8,8 @@ def test_valid_value():
     tok = orders.OrderToken(["printall"])
     assert tok.value == "printall"
 
-@pytest.fixture 
-def keywords_no_arg():
-    return [word for word in orders.OrderToken.keywords if 0 in orders.OrderToken.keywords[word]]
-
-@pytest.fixture(params=keywords_no_arg())
-def identity(request):
-    return request.param
-
-def test_all_valid_values_no_arg(identity):
-    # for word in orders.OrderToken.keywords:
-    #     if 0 in orders.OrderToken.keywords[word]:
-    #         tok = orders.OrderToken([word])
-    #         assert tok.value == word
-    word = identity
+@pytest.mark.parametrize("word", [word for word in orders.OrderToken.keywords if 0 in orders.OrderToken.keywords[word]] )
+def test_all_valid_values_no_arg(word):
     assert orders.OrderToken([word]).value == word
 
 
@@ -48,6 +36,8 @@ def test_valid_arguement_range():
             and tok.args_type == ["range"] \
             and tok.args == [(1,5)]
 
-# def test_invalid_arguement_range():
-#     tok = orders.OrderToken(["
 
+def test_invalid_arguement_range():
+    with pytest.raises(ValueError) as err:
+        tok = orders.OrderToken(["replace", "6..2"])
+    assert err.value.args[0] == "\"replace\" given invalid range \"6..2\", 6 more than 2"

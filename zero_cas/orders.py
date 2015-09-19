@@ -43,10 +43,17 @@ class OrderToken:
                 print(p_range.match(num_arg))
                 args_type.append("range")
                 print(num_arg)
-                parsed_arg = tuple([int(num) for num in num_arg.split('..')])
-                # if len(parsed_arg) > 2:
-                    # errmsg = "\"{0}\" given invalid number({1}) of arguments \"{2}\", max 2".format(self.value, parsed_arg, num_arg)
-
+                parsed_arg = tuple([int(num) for num in num_arg.split('..') if num != ""])
+                if len(parsed_arg) > 2:
+                    errmsg = "\"{0}\" given invalid range\"{1}\"".format(self.value, num_arg)
+                    raise ValueError(errmsg)
+                for num in parsed_arg:
+                    if num < 0:
+                        errmsg = "\"{0}\" given invalid range \"{1}\", negative number".format(self.value, num)
+                        raise ValueError(errmsg)
+                if len(parsed_arg) == 2 and parsed_arg[0] > parsed_arg[1]:
+                    errmsg = "\"{0}\" given invalid range \"{1}\", {2} more than {3}".format(self.value, num_arg, parsed_arg[0], parsed_arg[1])
+                    raise ValueError(errmsg)
                 args.append(parsed_arg)
             else:
                 errmsg = "\"{0}\" given invalid argument \"{1}\"".format(self.value, num_arg)
