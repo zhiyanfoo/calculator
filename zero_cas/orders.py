@@ -1,5 +1,6 @@
 import re
 
+
 class OrderToken:
     #keywords : number of arguements they can have
     keywords = {
@@ -33,16 +34,11 @@ class OrderToken:
 
         for num_arg in lexeme_args:
             if p_list.match(num_arg) is not None:
-                print(p_list.match(num_arg))
-                print(num_arg.split(','))
                 args_type.append("list")
-                print(num_arg)
                 parsed_arg = tuple([int(num) for num in num_arg.split(',')])
                 args.append(parsed_arg)
             elif p_range.match(num_arg) is not None:
-                print(p_range.match(num_arg))
                 args_type.append("range")
-                print(num_arg)
                 parsed_arg = tuple([int(num) for num in num_arg.split('..') if num != ""])
                 if len(parsed_arg) > 2:
                     errmsg = "\"{0}\" given invalid range\"{1}\"".format(self.value, num_arg)
