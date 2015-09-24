@@ -9,3 +9,22 @@
 * numeric
 * fractional
 * exit
+
+**variables**
+
+variables are given by the reges "[a-zA-Z](?:_\w+|\d\d)"
+valid variables
+a, Z
+A_1
+x_force
+a1
+c12
+x_long_var
+
+invalid
+1a
+a100 (max two numbers can be appended to the first letter)
+ab (considered as two variables)
+
+
+
