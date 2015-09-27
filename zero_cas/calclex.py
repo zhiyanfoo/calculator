@@ -35,20 +35,24 @@ def t_error(t):
 
 #build the lexer
 
-lexer = lex.lex()
+# lexer = lex.lex()
 
-data = '''
-3 + 4 * 10
-  + -20 *2
-'''
+# data = '''
+# 3 + 4 * 10
+#   + -20 *2
+# '''
 
-lexer.input(data)
+# lexer.input(data)
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
+# tokens_created = list()
+
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     tokens_created.append(tok)
+
+# print(tokens_created)
 
 
 
