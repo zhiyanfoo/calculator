@@ -11,7 +11,7 @@ def lexer():
 
 
 def test_add_sub_mul_unminus(lexer):
-    data = '3 + 4 * 10  + -20 *2'
+    raw_formula = '3 + 4 * 10  + -20 *2'
 
     expected = [
         ['NUMBER', 3, 1, 0],
@@ -26,20 +26,43 @@ def test_add_sub_mul_unminus(lexer):
         ['NUMBER', 2, 1, 19],
     ]
 
-    assert expected == totoklist(data, lexer)
+    assert expected == totoklist(raw_formula, lexer)
 
-def test_variable_assignment(lexer):
-    data = 'x = 4 * 100'
-
-    expected = [
-        ['VARIABLE', 'x', 1, 0],
-        ['ASSIGNMENT', '=', 1, 2],
-        ['NUMBER', 4, 1, 4],
-        ['TIMES', '*', 1, 6],
-        ['NUMBER', 100, 1, 8],
+variable_assignment_data = (
+        ('x = 4 * 100',
+        [
+            ['VARIABLE', 'x', 1, 0],
+            ['ASSIGNMENT', '=', 1, 2],
+            ['NUMBER', 4, 1, 4],
+            ['TIMES', '*', 1, 6],
+            ['NUMBER', 100, 1, 8]
         ]
+        ),
+        ('hel123_ = 12/3 + 2',
+            [
+                ['VARIABLE', 'hel123_', 1, 0],
+                ['ASSIGNMENT', '=', 1, 8], 
+                ['NUMBER', 12, 1, 10],
+                ['DIVIDE', '/', 1, 12],
+                ['NUMBER', 3, 1, 13],
+                ['PLUS', '+', 1, 15],
+                ['NUMBER', 2, 1, 17]
+            ]
+        )
+    )
+@pytest.mark.parametrize("raw_formula,expected", variable_assignment_data)
+def test_variable_assignment(lexer, raw_formula, expected):
+    # raw_formula = 'x = 4 * 100'
 
-    assert expected == totoklist(data, lexer)
+    # expected = [
+    #     ['VARIABLE', 'x', 1, 0],
+    #     ['ASSIGNMENT', '=', 1, 2],
+    #     ['NUMBER', 4, 1, 4],
+    #     ['TIMES', '*', 1, 6],
+    #     ['NUMBER', 100, 1, 8],
+    #     ]
+
+    assert expected == totoklist(raw_formula, lexer)
 
 
 
@@ -49,8 +72,8 @@ def tokensaslist(tokens):
     return [ [tok.type, tok.value, tok.lineno, tok.lexpos] for tok in tokens]
 
 
-def totoklist(data, lexer):
-    lexer.input(data)
+def totoklist(raw_formula, lexer):
+    lexer.input(raw_formula)
 
     tokens_created = list()
     
