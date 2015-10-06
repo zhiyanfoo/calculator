@@ -26,7 +26,7 @@ def test_add_sub_mul_unminus(lexer):
         ['NUMBER', 2, 1, 19],
     ]
 
-    assert expected == toklist(data, lexer)
+    assert expected == totoklist(data, lexer)
 
 def test_variable_assignment(lexer):
     data = 'x = 4 * 100'
@@ -39,7 +39,7 @@ def test_variable_assignment(lexer):
         ['NUMBER', 100, 1, 8],
         ]
 
-    assert expected == toklist(data, lexer)
+    assert expected == totoklist(data, lexer)
 
 
 
@@ -49,7 +49,7 @@ def tokensaslist(tokens):
     return [ [tok.type, tok.value, tok.lineno, tok.lexpos] for tok in tokens]
 
 
-def toklist(data, lexer):
+def totoklist(data, lexer):
     lexer.input(data)
 
     tokens_created = list()

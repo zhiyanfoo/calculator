@@ -15,18 +15,14 @@
 
 Identifier regex = ( letter | underscore ), {letter | underscore | digit}
 
-([a-zA-Z]|_)[\w_]*
+[a-zA-Z_][a-zA-Z0-9_]*
 
 
 valid variables
 * a, Z
+* sinco
 * _A_1
 * x_force
 * a1
 * c12
 * x_long_var
-
-invalid
-* 1a
-* a100 (max two numbers can be appended to the first letter)
-* ab (considered as two variables)
