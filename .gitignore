@@ -4,3 +4,7 @@ pip-selfcheck.json
 lib/python*
 bin
 pvenv.cfg
+test/calc_output
+test/calc_output.txt
+zero_cas/parser.out
+zero_cas/parsetab.py

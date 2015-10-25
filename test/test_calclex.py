@@ -28,11 +28,11 @@ def test_add_sub_mul_unminus(lexer):
 
     assert expected == totoklist(raw_formula, lexer)
 
-variable_assignment_data = (
+identifier_assignment_data = (
         ('x = 4 * 100',
         [
-            ['VARIABLE', 'x', 1, 0],
-            ['ASSIGNMENT', '=', 1, 2],
+            ['IDENTIFIER', 'x', 1, 0],
+            ['ASSIGN', '=', 1, 2],
             ['NUMBER', 4, 1, 4],
             ['TIMES', '*', 1, 6],
             ['NUMBER', 100, 1, 8]
@@ -40,8 +40,8 @@ variable_assignment_data = (
         ),
         ('hel123_ = 12/3 + 2',
             [
-                ['VARIABLE', 'hel123_', 1, 0],
-                ['ASSIGNMENT', '=', 1, 8], 
+                ['IDENTIFIER', 'hel123_', 1, 0],
+                ['ASSIGN', '=', 1, 8], 
                 ['NUMBER', 12, 1, 10],
                 ['DIVIDE', '/', 1, 12],
                 ['NUMBER', 3, 1, 13],
@@ -50,18 +50,8 @@ variable_assignment_data = (
             ]
         )
     )
-@pytest.mark.parametrize("raw_formula,expected", variable_assignment_data)
-def test_variable_assignment(lexer, raw_formula, expected):
-    # raw_formula = 'x = 4 * 100'
-
-    # expected = [
-    #     ['VARIABLE', 'x', 1, 0],
-    #     ['ASSIGNMENT', '=', 1, 2],
-    #     ['NUMBER', 4, 1, 4],
-    #     ['TIMES', '*', 1, 6],
-    #     ['NUMBER', 100, 1, 8],
-    #     ]
-
+@pytest.mark.parametrize("raw_formula,expected", identifier_assignment_data)
+def test_identifier_assignment(lexer, raw_formula, expected):
     assert expected == totoklist(raw_formula, lexer)
 
 
