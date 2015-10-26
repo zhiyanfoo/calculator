@@ -83,4 +83,24 @@ def test_invalid_recursive_negation(capsys):
     print(expected)
     assert expected == err
 
+def test_parenthesis():
+    raw_formula = "5 * (11 - 1)"
+    expected = 50
+    assert expected == calcparser.parse(raw_formula)
+
+def test_parenthesis_whole():
+    raw_formula = "(11 - 1)"
+    expected = 10
+    assert expected == calcparser.parse(raw_formula)
+
+def test_parenthesis_unary():
+    raw_formula = "-(-1)"
+    expected = 1
+    assert expected == calcparser.parse(raw_formula)
+
+def test_parenthesis_division():
+    raw_formula = "1000/(90 + 10)"
+    expected = 10
+    assert expected == calcparser.parse(raw_formula)
+
 
