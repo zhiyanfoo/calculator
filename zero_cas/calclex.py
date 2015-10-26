@@ -29,14 +29,6 @@ def t_IDENTIFIER(t):
     r"[a-zA-Z_][a-zA-Z0-9_]*"
     return t
 
-
-
-#define a rule so we can track line numbers
-def t_newline(t):
-    r"\n+"
-    t.lexer.lineno += len(t.value)
-
-
 t_ignore  = ' \t'
 
 def t_error(t):

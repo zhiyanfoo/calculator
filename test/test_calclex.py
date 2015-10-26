@@ -14,16 +14,16 @@ def test_add_sub_mul_unminus(lexer):
     raw_formula = '3 + 4 * 10  + -20 *2'
 
     expected = [
-        ['NUMBER', 3, 1, 0],
-        ['PLUS', '+', 1, 2],
-        ['NUMBER', 4, 1, 4],
-        ['TIMES', '*', 1, 6],
-        ['NUMBER', 10, 1, 8],
-        ['PLUS', '+', 1, 12],
-        ['MINUS', '-', 1, 14],
-        ['NUMBER', 20, 1, 15],
-        ['TIMES', '*', 1, 18],
-        ['NUMBER', 2, 1, 19],
+        ['NUMBER', 3, 0],
+        ['PLUS', '+', 2],
+        ['NUMBER', 4, 4],
+        ['TIMES', '*', 6],
+        ['NUMBER', 10, 8],
+        ['PLUS', '+', 12],
+        ['MINUS', '-', 14],
+        ['NUMBER', 20, 15],
+        ['TIMES', '*', 18],
+        ['NUMBER', 2, 19],
     ]
 
     assert expected == totoklist(raw_formula, lexer)
@@ -31,22 +31,22 @@ def test_add_sub_mul_unminus(lexer):
 identifier_assignment_data = (
         ('x = 4 * 100',
         [
-            ['IDENTIFIER', 'x', 1, 0],
-            ['ASSIGN', '=', 1, 2],
-            ['NUMBER', 4, 1, 4],
-            ['TIMES', '*', 1, 6],
-            ['NUMBER', 100, 1, 8]
+            ['IDENTIFIER', 'x', 0],
+            ['ASSIGN', '=', 2],
+            ['NUMBER', 4, 4],
+            ['TIMES', '*', 6],
+            ['NUMBER', 100, 8]
         ]
         ),
         ('hel123_ = 12/3 + 2',
             [
-                ['IDENTIFIER', 'hel123_', 1, 0],
-                ['ASSIGN', '=', 1, 8], 
-                ['NUMBER', 12, 1, 10],
-                ['DIVIDE', '/', 1, 12],
-                ['NUMBER', 3, 1, 13],
-                ['PLUS', '+', 1, 15],
-                ['NUMBER', 2, 1, 17]
+                ['IDENTIFIER', 'hel123_', 0],
+                ['ASSIGN', '=', 8], 
+                ['NUMBER', 12, 10],
+                ['DIVIDE', '/', 12],
+                ['NUMBER', 3, 13],
+                ['PLUS', '+', 15],
+                ['NUMBER', 2, 17]
             ]
         )
     )
@@ -59,7 +59,8 @@ def test_identifier_assignment(lexer, raw_formula, expected):
 def tokensaslist(tokens):
     for i in tokens:
         print(i)
-    return [ [tok.type, tok.value, tok.lineno, tok.lexpos] for tok in tokens]
+    print(tokens[0].lineno)
+    return [ [tok.type, tok.value, tok.lexpos] for tok in tokens]
 
 
 def totoklist(raw_formula, lexer):

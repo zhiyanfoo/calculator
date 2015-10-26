@@ -36,8 +36,16 @@ def p_factor_term(p):
     'factor : term'
     p[0] = p[1]
 
+def p_term_negative_unary(p):
+    'term : MINUS unary'
+    p[0] = -p[2]
+
+def p_term_unary(p):
+    'term : unary'
+    p[0] = p[1]
+
 def p_expression_number(p):
-    'term : NUMBER'
+    'unary : NUMBER'
     p[0] = p[1]
 
 calcparser = yacc.yacc()
