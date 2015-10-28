@@ -6,6 +6,7 @@ tokens = (
         "MINUS",
         "TIMES",
         "DIVIDE",
+        "EXPONENT",
         "LPAREN",
         "RPAREN",
         "ASSIGN",
@@ -16,6 +17,7 @@ t_PLUS = r"\+"
 t_MINUS = r"-"
 t_TIMES = r"\*"
 t_DIVIDE = r"/"
+t_EXPONENT = r"\^"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
 t_ASSIGN = r"="

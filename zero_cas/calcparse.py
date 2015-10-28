@@ -57,8 +57,20 @@ def p_unary_parenthesis(p):
     'unary : LPAREN expression RPAREN'
     p[0] = p[2]
 
-def p_expression_number(p):
-    'unary : NUMBER'
+def p_unary_exponential(p):
+    'unary : exponential'
+    p[0] = p[1]
+
+def p_exponential_parenthesis(p):
+    'exponential : LPAREN expression RPAREN'
+    p[0] = p[2]
+
+def p_exponential_exponential(p):
+    'exponential : NUMBER EXPONENT term'
+    p[0] = p[1] ** p[3]
+
+def p_to_number(p):
+    'exponential : NUMBER'
     p[0] = p[1]
 
 calcparser = yacc.yacc()

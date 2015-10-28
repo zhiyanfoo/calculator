@@ -103,4 +103,29 @@ def test_parenthesis_division():
     expected = 10
     assert expected == calcparser.parse(raw_formula)
 
+def test_exponential():
+    raw_formula = "2^5"
+    expected = 2**5
+    assert expected == calcparser.parse(raw_formula)
 
+def test_exponential_exponential():
+    raw_formula = "3^3^2"
+    expected = 3**9
+    assert expected == calcparser.parse(raw_formula)
+
+
+def test_exponential_exponential_multiplication():
+    raw_formula = "3^3^2*2"
+    expected = (3**9)*2
+    assert expected == calcparser.parse(raw_formula)
+
+
+def test_exponential_negative_exponential():
+    raw_formula = "9^-2"
+    expected = 9 ** -2
+    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
+
+def test_multiplication_exponential_negative_exponential_negative_exponential():
+    raw_formula = "3 * 9^-2 ^ -1 ^ -2"
+    expected = 3 * 9 ** -2 ** -1 ** -2
+    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
