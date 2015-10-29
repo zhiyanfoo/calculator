@@ -152,3 +152,7 @@ def test_factorial_parenthesis():
     expected = 6
     assert expected == calcparser.parse(raw_formula)
 
+def test_empty():
+    raw_formula = ""
+    expected = ""
+    assert expected == calcparser.parse(raw_formula)

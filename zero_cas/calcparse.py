@@ -12,6 +12,9 @@ def p_statement(p):
     'statement : expression'
     p[0] = p[1]
 
+def p_statement_empty(p):
+    'statement : empty'
+    p[0] = p[1]
 
 def p_expression_plus(p):
     'expression : expression PLUS factor'
@@ -33,7 +36,6 @@ def p_factor_multiplication(p):
     'factor : factor TIMES term'
     p[0] = p[1] * p[3]
     
-
 def p_factor_divide(p):
     'factor : factor DIVIDE term'
     p[0] = p[1] / p[3]
@@ -90,8 +92,8 @@ def p_to_number(p):
     'factorial : NUMBER'
     p[0] = p[1]
 
+def p_empty(p):
+    'empty :'
+    p[0] = ""
+
 calcparser = yacc.yacc()
-
-
-
-

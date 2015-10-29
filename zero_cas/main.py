@@ -1,13 +1,15 @@
+from orders import OrderToken
+
 def remove_ini_whitespace(line):
     i = 0
     while(line[i] == " "):
         i += 1
     return line[i:]
 
-def keep_getting_input():
+def keep_getting_input(input_method):
     run = app()
     while True:
-        inp = input("> ")
+        inp = input_method()
         app.get_raw(inp)
 
 class app:
