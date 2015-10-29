@@ -55,6 +55,15 @@ def test_identifier_assignment(lexer, raw_formula, expected):
     assert expected == totoklist(raw_formula, lexer)
 
 
+def test_factorial(lexer):
+    raw_formula = '3!'
+
+    expected = [
+        ['NUMBER', 3, 0],
+        ['FACTORIAL', '!', 1],
+    ]
+
+    assert expected == totoklist(raw_formula, lexer)
 
 def tokensaslist(tokens):
     for i in tokens:
