@@ -7,6 +7,8 @@ import ply.yacc as yacc
 import calcparse
 from calcparse import calcparser
 
+from math import factorial
+
 def test_number():
     raw_formula = '7'
     expected = 7
@@ -129,3 +131,24 @@ def test_multiplication_exponential_negative_exponential_negative_exponential():
     raw_formula = "3 * 9^-2 ^ -1 ^ -2"
     expected = 3 * 9 ** -2 ** -1 ** -2
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
+
+def test_factorial():
+    raw_formula = "4!"
+    expected = factorial(4)
+    assert expected == calcparser.parse(raw_formula)
+
+def test_factorial():
+    raw_formula = "4!!"
+    expected = factorial(factorial(4))
+    assert expected == calcparser.parse(raw_formula)
+
+def test_factorial_complex():
+    raw_formula = "-4!^3!"
+    expected = -factorial(4) ** factorial(3)
+    assert expected == calcparser.parse(raw_formula)
+
+def test_factorial_parenthesis():
+    raw_formula = "(2 + 1)!"
+    expected = 6
+    assert expected == calcparser.parse(raw_formula)
+
