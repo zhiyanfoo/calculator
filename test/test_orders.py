@@ -8,7 +8,7 @@ def test_valid_value():
     tok = orders.OrderToken(["printall"])
     assert tok.value == "printall"
 
-@pytest.mark.parametrize("word", [word for word in orders.OrderToken.keywords if 0 in orders.OrderToken.keywords[word]] )
+@pytest.mark.parametrize("word", [word for word in orders.keywords if 0 in orders.keywords[word][0]] )
 def test_all_valid_values_no_arg(word):
     assert orders.OrderToken([word]).value == word
 
@@ -41,3 +41,25 @@ def test_invalid_arguement_range():
     with pytest.raises(ValueError) as err:
         tok = orders.OrderToken(["replace", "6..2"])
     assert err.value.args[0] == "\"replace\" given invalid range \"6..2\", 6 more than 2"
+
+
+class DataInputMethod:
+    def __init__(self, data):
+        self.data = data
+        self.count = -1
+
+    def __call__(self):
+        self.count += 1
+        return(data[self.count])
+
+# def test_perform_order():
+#     data = [
+#         "3 + 7",
+#         " 3 ^ 2",
+#         "  @exit"
+#         ]
+
+
+
+
+

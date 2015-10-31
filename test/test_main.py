@@ -6,3 +6,4 @@ import main
 
 def test_remove_ini_whitespace():
     assert main.remove_ini_whitespace("   hello  ") == "hello  "
+
