@@ -2,7 +2,6 @@ import sys
 sys.path.append("..") 
 sys.path.append("../zero_cas")
 import pytest
-import ply.yacc as yacc
 
 import calcparse
 from calcparse import calcparser
