@@ -1,8 +1,12 @@
 import ply.yacc as yacc
 from calclex import tokens
-from math import factorial
+import math 
 
 identifiers = dict()
+
+functions = { 'sin' : math.sin, 'cos' : math.cos, 'pi': lambda : math.pi}
+
+
 
 def p_assign_expression(p):
     'statement : IDENTIFIER ASSIGN expression'
@@ -49,6 +53,12 @@ def p_term_parenthesis(p):
     'term : LPAREN expression RPAREN'
     p[0] = p[2]
 
+
+def p_term_function_unary(p):
+    'term : FUNCTION term'
+    p[0] = functions[p[1]](p[2])
+    
+
 def p_term_negative_unary(p):
     'term : MINUS unary'
     p[0] = -p[2]
@@ -75,7 +85,7 @@ def p_exponential_exponential(p):
 
 def p_real_factorial(p):
     'exponential : factorial FACTORIAL'
-    p[0] = factorial(p[1])
+    p[0] = math.factorial(p[1])
 
 def p_exponential_factorial(p):
     'exponential : factorial'
@@ -83,7 +93,7 @@ def p_exponential_factorial(p):
 
 def p_repeat_factorial(p):
     'factorial : factorial FACTORIAL'
-    p[0] = factorial(p[1])
+    p[0] = math.factorial(p[1])
 
 def p_factorial_parenthesis(p):
     'factorial : LPAREN expression RPAREN'
@@ -96,6 +106,10 @@ def p_to_number(p):
 def p_to_variable(p):
     'factorial : IDENTIFIER'
     p[0] = identifiers[p[1]]
+
+def p_to_function(p):
+    'factorial : FUNCTION'
+    p[0] = functions[p[1]]()
 
 def p_empty(p):
     'empty :'

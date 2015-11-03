@@ -24,3 +24,11 @@ valid variables
 * a1
 * c12
 * x_long_var
+
+**functions**
+
+Function regex : ( letter | underscore ) ( letter | digit | underscore )*
+[a-zA-Z_][a-zA-Z0-9]*
+
+
+Internal representation : \{\$[a-zA-Z_][a-zA-Z0-9_]*\$\}

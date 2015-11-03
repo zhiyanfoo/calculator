@@ -155,3 +155,14 @@ def test_empty():
     raw_formula = ""
     expected = ""
     assert expected == calcparser.parse(raw_formula)
+
+def test_function():
+    raw_formula = "{$sin$}(0)"
+    expected = 0
+    assert expected == calcparser.parse(raw_formula)
+
+
+def test_minus_function():
+    raw_formula = "{$sin$} - {$pi$} "
+    expected = 0
+    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001

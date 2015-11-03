@@ -12,7 +12,15 @@ tokens = (
         "RPAREN",
         "ASSIGN",
         "IDENTIFIER",
+        "FUNCTION",
+        # "COMMA",
+        # "RBRACKET"
         )
+
+def t_FUNCTION(t):
+    r"\{\$[a-zA-Z_][a-zA-Z0-9_]*\$\}"
+    t.value = t.value[2:len(t.value)-2]
+    return t
 
 t_PLUS = r"\+"
 t_MINUS = r"-"
@@ -23,6 +31,10 @@ t_FACTORIAL = r"\!"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
 t_ASSIGN = r"="
+# t_COMMA = r","
+# t_LBRACKET = r"["
+# t_RBRACKET = r"]"
+
 
 def t_NUMBER(t):
     r"\d+"
@@ -32,6 +44,9 @@ def t_NUMBER(t):
 def t_IDENTIFIER(t):
     r"[a-zA-Z_](_[a-zA-Z0-9_]+|[0-9]+)?"
     return t
+
+
+
 
 t_ignore  = ' \t'
 
