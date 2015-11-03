@@ -34,4 +34,15 @@ def test_basic_calculations():
 
     assert output.output == [10, 9]
 
+def test_variable_assignement():
+    data = [
+        "a = 3 + 7",
+        " a ^ 2",
+        "@printall",
+        "  @exit"
+        ]
+    output = DataOutputMethod()
+    app = App(DataInputMethod(data), output)
+    app.run()
 
+    assert output.output == [10, 100]

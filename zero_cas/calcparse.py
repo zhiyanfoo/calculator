@@ -7,6 +7,7 @@ identifiers = dict()
 def p_assign_expression(p):
     'statement : IDENTIFIER ASSIGN expression'
     identifiers[p[1]] = p[3]
+    p[0] = p[3]
 
 def p_statement(p):
     'statement : expression'
@@ -91,6 +92,10 @@ def p_factorial_parenthesis(p):
 def p_to_number(p):
     'factorial : NUMBER'
     p[0] = p[1]
+
+def p_to_variable(p):
+    'factorial : IDENTIFIER'
+    p[0] = identifiers[p[1]]
 
 def p_empty(p):
     'empty :'
