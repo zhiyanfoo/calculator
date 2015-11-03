@@ -13,15 +13,13 @@
 
 **variables**
 
-Identifier regex = ( letter | underscore ), {letter | underscore | digit}
+Identifier regex : ( letter | underscore ) ( underscore ( letter | underscore | digit)+ | digit+ )?
 
-[a-zA-Z_][a-zA-Z0-9_]*
+[a-zA-Z_](_[a-zA-Z0-9_]+|[0-9]+)?
 
 
 valid variables
 * a, Z
-* sinco
-* _A_1
 * x_force
 * a1
 * c12

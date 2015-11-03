@@ -30,7 +30,7 @@ def t_NUMBER(t):
     return t
 
 def t_IDENTIFIER(t):
-    r"[a-zA-Z_][a-zA-Z0-9_]*"
+    r"[a-zA-Z_](_[a-zA-Z0-9_]+|[0-9]+)?"
     return t
 
 t_ignore  = ' \t'

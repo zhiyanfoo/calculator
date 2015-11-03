@@ -38,9 +38,9 @@ identifier_assignment_data = (
             ['NUMBER', 100, 8]
         ]
         ),
-        ('hel123_ = 12/3 + 2',
+        ('h_l1238 = 12/3 + 2',
             [
-                ['IDENTIFIER', 'hel123_', 0],
+                ['IDENTIFIER', 'h_l1238', 0],
                 ['ASSIGN', '=', 8], 
                 ['NUMBER', 12, 10],
                 ['DIVIDE', '/', 12],
@@ -54,7 +54,6 @@ identifier_assignment_data = (
 def test_identifier_assignment(lexer, raw_formula, expected):
     assert expected == totoklist(raw_formula, lexer)
 
-
 def test_factorial(lexer):
     raw_formula = '3!'
 
@@ -64,6 +63,18 @@ def test_factorial(lexer):
     ]
 
     assert expected == totoklist(raw_formula, lexer)
+
+def test_invalid_variable(lexer):
+    raw_formula = 'he'
+
+    expected = [
+        ['IDENTIFIER', 'h', 0],
+        ['IDENTIFIER', 'e', 1]
+    ]
+
+    assert expected == totoklist(raw_formula, lexer)
+
+
 
 def tokensaslist(tokens):
     for i in tokens:
