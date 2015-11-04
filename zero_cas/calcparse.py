@@ -13,6 +13,11 @@ def p_assign_expression(p):
     identifiers[p[1]] = p[3]
     p[0] = p[3]
 
+def p_define_function(p):
+    'statement : FUNCTION ASSIGN expression'
+    functions[p[1]] = lambda : p[3]
+    p[0] = p[3]
+
 def p_statement(p):
     'statement : expression'
     p[0] = p[1]
