@@ -1,4 +1,5 @@
 import sys
+sys.path.append(".") 
 sys.path.append("..") 
 sys.path.append("../zero_cas")
 import pytest
@@ -7,8 +8,7 @@ import calcparse
 from calcparse import calcparser
 
 from math import factorial
-from data_io import DataInputMethod, DataOutputMethod
-from main import App
+from helper import DataInputMethod, DataOutputMethod, multiline_calc
 
 
 def test_number(capsys):
@@ -222,14 +222,14 @@ def test_minus_function(capsys):
     out, err = capsys.readouterr()
     assert err == ""
 
-def test_function_function(capsys):
+def test_function_1_function_1(capsys):
     raw_formula = "{cos$1} {sin$1} 0"
     expected = 1
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
     assert err == ""
 
-def test_function_parenthesis(capsys):
+def test_functions_parenthesis(capsys):
     raw_formula = "{cos$1} (({cos$1} - {pi$0})*{pi$0})"
     expected = -1
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
@@ -237,7 +237,7 @@ def test_function_parenthesis(capsys):
     assert err == ''
     
 
-def test_define_function(capsys):
+def test_define_function_0(capsys):
     raw_formula = "{hello$0} = 5"
     expected = 5
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
@@ -245,17 +245,12 @@ def test_define_function(capsys):
     assert err == ''
 
 
-def test_use_defined_function(capsys):
+def test_use_defined_function_0(capsys):
     data = [
         "{boy$0} = 3 + 7",
         "{boy$0} - 3",
         "@printall",
         "  @exit"
         ]
-    output = DataOutputMethod()
-    app = App(DataInputMethod(data), output)
-    app.run()
-    assert output.output == [10, 7]
-    out, err = capsys.readouterr()
-    assert err == ''
-
+    expected = [10, 7]
+    multiline_calc(data, expected, capsys)

@@ -1,9 +1,10 @@
 import sys
+sys.path.append(".") 
 sys.path.append("..") 
 sys.path.append("../zero_cas")
 import pytest
 from main import App
-from data_io import DataInputMethod, DataOutputMethod
+from helper import DataInputMethod, DataOutputMethod, multiline_calc
 
 # class DataInputMethod:
 #     def __init__(self, data):
@@ -22,28 +23,22 @@ from data_io import DataInputMethod, DataOutputMethod
 #         for i in lines:
 #             self.output.append(calc_output[i])
 
-def test_basic_calculations():
+def test_basic_calculations(capsys):
     data = [
         "3 + 7",
         " 3 ^ 2",
         "@printall",
         "  @exit"
         ]
-    output = DataOutputMethod()
-    app = App(DataInputMethod(data), output)
-    app.run()
+    expected = [10, 9]
+    multiline_calc(data, expected, capsys)
 
-    assert output.output == [10, 9]
-
-def test_variable_assignement():
+def test_variable_assignement(capsys):
     data = [
         "a = 3 + 7",
         " a ^ 2",
         "@printall",
         "  @exit"
         ]
-    output = DataOutputMethod()
-    app = App(DataInputMethod(data), output)
-    app.run()
-
-    assert output.output == [10, 100]
+    expected = [10, 100]
+    multiline_calc(data, expected, capsys)

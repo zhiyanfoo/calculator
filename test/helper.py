@@ -1,3 +1,7 @@
+import sys
+sys.path.append("../zero_cas")
+from main import App
+
 class DataInputMethod:
     def __init__(self, data):
         self.data = data
@@ -14,3 +18,12 @@ class DataOutputMethod:
     def __call__(self, calc_output, lines):
         for i in lines:
             self.output.append(calc_output[i])
+
+def multiline_calc(data, expected, capsys):
+    output = DataOutputMethod()
+    app = App(DataInputMethod(data), output)
+    app.run()
+    assert output.output == expected
+    out, err = capsys.readouterr()
+    assert err == ''
+
