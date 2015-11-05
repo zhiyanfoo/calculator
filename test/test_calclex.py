@@ -75,22 +75,22 @@ def test_invalid_variable(lexer):
     assert expected == totoklist(raw_formula, lexer)
 
 def test_function(lexer):
-    raw_formula = '{$sin$}'
+    raw_formula = '{sin$1}'
 
     expected = [
-        ['FUNCTION', 'sin', 0],
+        ['FUNCTION_1', 'sin', 0],
     ]
 
     assert expected == totoklist(raw_formula, lexer)
 
 def test_function_assignment(lexer):
-    raw_formula = '{$sin$}x = {$xo$}(x - a)'
+    raw_formula = '{sin$1}x = {xo$0}(x - a)'
 
     expected = [
-        ['FUNCTION', 'sin', 0],
+        ['FUNCTION_1', 'sin', 0],
         ['IDENTIFIER', 'x', 7],
         ['ASSIGN', '=', 9],
-        ['FUNCTION', 'xo', 11],
+        ['FUNCTION_0', 'xo', 11],
         ['LPAREN', '(', 17],
         ['IDENTIFIER', 'x', 18],
         ['MINUS', '-', 20],

@@ -208,7 +208,7 @@ def test_empty(capsys):
     assert err == ""
 
 def test_function(capsys):
-    raw_formula = "{$sin$}(0)"
+    raw_formula = "{sin$1}(0)"
     expected = 0
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
@@ -216,21 +216,21 @@ def test_function(capsys):
 
 
 def test_minus_function(capsys):
-    raw_formula = "{$sin$} - {$pi$} "
+    raw_formula = "{sin$1} - {pi$0} "
     expected = 0
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
     assert err == ""
 
 def test_function_function(capsys):
-    raw_formula = "{$cos$} {$sin$} 0"
+    raw_formula = "{cos$1} {sin$1} 0"
     expected = 1
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
     assert err == ""
 
 def test_function_parenthesis(capsys):
-    raw_formula = "{$cos$} (({$cos$} - {$pi$})*{$pi$})"
+    raw_formula = "{cos$1} (({cos$1} - {pi$0})*{pi$0})"
     expected = -1
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
@@ -238,24 +238,24 @@ def test_function_parenthesis(capsys):
     
 
 def test_define_function(capsys):
-    raw_formula = "{$hello$} = 5"
+    raw_formula = "{hello$0} = 5"
     expected = 5
     assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
     out, err = capsys.readouterr()
     assert err == ''
 
 
-# def test_use_defined_function(capsys):
-#     data = [
-#         "boy = 3 + 7",
-#         "boy 3",
-#         "@printall",
-#         "  @exit"
-#         ]
-#     output = DataOutputMethod()
-#     app = App(DataInputMethod(data), output)
-#     app.run()
-#     assert output.output == [10, 9]
-#     out, err = capsys.readouterr()
-#     assert err == ''
+def test_use_defined_function(capsys):
+    data = [
+        "{boy$0} = 3 + 7",
+        "{boy$0} - 3",
+        "@printall",
+        "  @exit"
+        ]
+    output = DataOutputMethod()
+    app = App(DataInputMethod(data), output)
+    app.run()
+    assert output.output == [10, 7]
+    out, err = capsys.readouterr()
+    assert err == ''
 

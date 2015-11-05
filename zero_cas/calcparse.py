@@ -4,9 +4,7 @@ import math
 
 identifiers = dict()
 
-functions = { 'sin' : math.sin, 'cos' : math.cos, 'pi': lambda : math.pi}
-
-
+functions = ({ 'pi': math.pi }, { 'sin' : math.sin, 'cos' : math.cos },{ })
 
 def p_assign_expression(p):
     'statement : IDENTIFIER ASSIGN expression'
@@ -14,8 +12,8 @@ def p_assign_expression(p):
     p[0] = p[3]
 
 def p_define_function(p):
-    'statement : FUNCTION ASSIGN expression'
-    functions[p[1]] = lambda : p[3]
+    'statement : FUNCTION_0 ASSIGN expression'
+    functions[0][p[1]] = p[3]
     p[0] = p[3]
 
 def p_statement(p):
@@ -60,8 +58,8 @@ def p_term_parenthesis(p):
 
 
 def p_term_function_unary(p):
-    'term : FUNCTION term'
-    p[0] = functions[p[1]](p[2])
+    'term : FUNCTION_1 term'
+    p[0] = functions[1][p[1]](p[2])
     
 
 def p_term_negative_unary(p):
@@ -112,9 +110,13 @@ def p_to_variable(p):
     'factorial : IDENTIFIER'
     p[0] = identifiers[p[1]]
 
-def p_to_function(p):
-    'factorial : FUNCTION'
-    p[0] = functions[p[1]]()
+def p_to_function_0(p):
+    'factorial : FUNCTION_0'
+    p[0] = functions[0][p[1]]
+
+def p_to_function_1(p):
+    'factorial : FUNCTION_1'
+    p[0] = functions[1][p[1]]()
 
 def p_empty(p):
     'empty :'
