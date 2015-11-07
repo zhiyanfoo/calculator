@@ -19,7 +19,13 @@ class DataOutputMethod:
         for i in lines:
             self.output.append(calc_output[i])
 
-def multiline_calc(data, expected, capsys):
+def check_parser(data, expected, capsys):
+    assert expected == calcparser.parse(raw_formula)
+    out, err = capsys.readouterr()
+    assert err == ""
+
+
+def check_multiline_calc(data, expected, capsys):
     output = DataOutputMethod()
     app = App(DataInputMethod(data), output)
     app.run()

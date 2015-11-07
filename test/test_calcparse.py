@@ -8,242 +8,306 @@ import calcparse
 from calcparse import calcparser
 
 from math import factorial
-from helper import DataInputMethod, DataOutputMethod, multiline_calc
+from helper import DataInputMethod, DataOutputMethod, check_parser, check_multiline_calc
+from simplify import simplify
 
 
-def test_number(capsys):
+@pytest.mark.ast
+def test_ast_number(capsys):
     raw_formula = '7'
+    expected = (7)
+    check_parser(raw_formula, expected, capsys)
+
+@pytest.mark.simplify
+def test_simplify_number(capsys):
+    abstract_syntax_tree = '(7,)'
     expected = 7
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert expected == simplify(abstract_syntax_tree)
 
-def test_identifier(capsys):
-    raw_formula = 'b = 7'
-    calcparser.parse(raw_formula)
-    assert calcparse.identifiers['b'] == 7
 
+@pytest.mark.ast
 def test_addition(capsys):
     raw_formula = "3 + 4"
+    expected = ('PLUS', 3, 4)
+    check_parser(raw_formula, expected, capsys)
+
+@pytest.mark.simplify
+def test_simplify_addition(capsys):
+    abstract_syntax_tree = ('PLUS', 3, 4)
     expected = 7
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
-def test_subtraction(capsys):
+@pytest.mark.ast
+def test_ast_subtraction(capsys):
     raw_formula = "4 - 3"
-    expected = 1
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    expected = ("MINUS", 4, 3)
+    check_parser(raw_formula, expected, capsys)
 
-def test_subtraction_subtraction(capsys):
+@pytest.mark.simplify
+def test_simplify_subtraction(capsys):
+    abstract_syntax_tree = ("MINUS", 4, 3)
+    expected = 1
+    assert simplify(abstract_syntax_tree) = expected
+
+@pytest.mark.ast
+def test_ast_subtraction_subtraction(capsys):
     raw_formula = "4 - 3 - 10"
-    expected = -9
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    expected = ("MINUS",  ("MINUS", 4, 3), 10)
+    check_parser(raw_formula, expected, capsys)
 
-def test_multiplication(capsys):
+@pytest.mark.simplify
+def test_simplify_subtraction_subtraction(capsys):
+    abstract_syntax_tree = ("MINUS",  ("MINUS", 4, 3), 10)
+    expected = -11
+    assert simplify(abstract_syntax_tree) = expected
+
+@pytest.mark.ast
+def test_ast_multiplication(capsys):
     raw_formula = "4 * 3 * 10"
+    expected = ("TIMES", 4, 3, 10)
+    check_parser(raw_formula, expected, capsys)
+
+
+@pytest.mark.simplify
+def test_simplify_multiplication(capsys):
+    abstract_syntax_tree = ("TIMES", 4, 3, 10)
     expected = 120
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
-
-def test_division(capsys):
+@pytest.mark.ast
+def test_ast_division(capsys):
     raw_formula = "50 / 10 / 5"
+    expected = ("DIVIDE", ("DIVIDE", 50, 10), 5)
+    check_parser(raw_formula, expected, capsys)
+
+
+@pytest.mark.simplify
+def test_simplify_division(capsys):
+    abstract_syntax_tree = ("DIVIDE", ("DIVIDE", 50, 10), 5)
     expected = 1
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
-def test_division_multiplication(capsys):
+@pytest.mark.ast
+def test_ast_division_multiplication(capsys):
     raw_formula = "50 / 10 * 5"
-    expected = 25
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    expected = ("TIMES", ("DIVIDE", 50, 10), 5)
+    check_parser(raw_formula, expected, capsys)
     
-def test_multiplication_division(capsys):
+@pytest.mark.simplify
+def test_simplify_division_multiplication(capsys):
+    abstract_syntax_tree = ("TIMES", ("DIVIDE", 50, 10), 5)
+    expected = 25
+    assert simplify(abstract_syntax_tree) = expected
+
+@pytest.mark.ast
+def test_ast_multiplication_division(capsys):
     raw_formula = "50 * 10 / 5"
+    expected = ("DIVIDE", ("TIMES", 50, 10), 5)
+    check_parser(raw_formula, expected, capsys)
+
+@pytest.mark.simplify
+def test_simplify_multiplication_division(capsys):
+    abstract_syntax_tree = ("DIVIDE", ("TIMES", 50, 10), 5)
     expected = 100
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
-def test_negative(capsys):
+@pytest.mark.ast
+def test_ast_negative(capsys):
     raw_formula = "-10"
+    expected = ("NEGATIVE",  10)
+    check_parser(raw_formula, expected, capsys)
+
+@pytest.mark.simplify
+def test_simplify_negative(capsys):
+    abstract_syntax_tree = ("NEGATIVE",  10)
     expected = -10
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
-def test_multiplication_negative(capsys):
+@pytest.mark.ast
+def test_ast_multiplication_negative(capsys):
     raw_formula = "4 * -10"
-    expected = -40
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    expected = ("TIMES", 4, ("NEGATIVE", 10))
+    check_parser(raw_formula, expected, capsys)
 
+@pytest.mark.simplify
+def test_simplify_multiplication_negative(capsys):
+    abstract_syntax_tree = ("TIMES", 4, ("NEGATIVE", 10))
+    expected = -40
+    assert simplify(abstract_syntax_tree) = expected
+
+@pytest.mark.ast
 def test_addition_negative(capsys):
     raw_formula = "40 + -10"
-    expected = 30
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
-def test_minus_negative(capsys):
-    raw_formula = "40 - - 10"
-    expected = 50
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    expected = ("PLUS", 40 , ("NEGATIVE", 10))
+    check_parser(raw_formula, expected, capsys)
     
+@pytest.mark.simplify
+def test_simplify_addition_negative(capsys):
+    abstract_syntax_tree = ("PLUS", 40 , ("NEGATIVE", 10))
+    expected = 30
+    assert simplify(abstract_syntax_tree) = expected
 
-def test_invalid_recursive_negation(capsys):
-    raw_formula = "--40"
-    calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    expected = 'yacc: Syntax error at line 1, token=MINUS\n'
-    print(err)
-    print(expected)
-    assert expected == err
+@pytest.mark.ast
+def test_ast_minus_negative(capsys):
+    raw_formula = "40 - - 10"
+    expected = ("MINUS", 40, ("NEGATIVE", 10))
+    check_parser(raw_formula, expected, capsys)
 
-def test_parenthesis(capsys):
-    raw_formula = "5 * (11 - 1)"
+@pytest.mark.simplify
+def test_minus_negative(capsys):
+    raw_formula = ("MINUS", 40, ("NEGATIVE", 10))
     expected = 50
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    assert simplify(abstract_syntax_tree) = expected
 
+#check old commit
+
+# @pytest.mark.ast
+# def test_invalid_recursive_negation(capsys):
+#     raw_formula = "--40"
+#     calcparser.parse(raw_formula)
+#     assert expected == err
+
+@pytest.mark.ast
+def test_ast_parenthesis(capsys):
+    raw_formula = "5 * (11 - 1)"
+    expected = ("TIMES", 5, ("MINUS", 11, 1))
+    check_parser(raw_formula, expected, capsys)
+
+@pytest.mark.simplify
+def test_parenthesis(capsys):
+    raw_formula = ("TIMES", 5, ("MINUS", 11, 1))
+    expected = 50
+    assert simplify(abstract_syntax_tree) = expected
+    
+@pytest.mark.ast
+def test_ast_parenthesis_whole(capsys):
+    raw_formula = "(11 - 1)"
+    expected = 10
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.simplify
 def test_parenthesis_whole(capsys):
     raw_formula = "(11 - 1)"
     expected = 10
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    check_parser(raw_formula, expected, capsys)
 
+@pytest.mark.ast
 def test_parenthesis_unary(capsys):
     raw_formula = "-(-1)"
     expected = 1
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_parenthesis_division(capsys):
     raw_formula = "1000/(90 + 10)"
     expected = 10
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_exponential(capsys):
     raw_formula = "2^5"
     expected = 2**5
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_exponential_exponential(capsys):
     raw_formula = "3^3^2"
     expected = 3**9
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    check_parser(raw_formula, expected, capsys)
+    
 
-
+@pytest.mark.ast
 def test_exponential_exponential_multiplication(capsys):
     raw_formula = "3^3^2*2"
     expected = (3**9)*2
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
+    check_parser(raw_formula, expected, capsys)
+    
 
-
+@pytest.mark.ast
 def test_exponential_negative_exponential(capsys):
     raw_formula = "9^-2"
-    expected = 9 ** -2
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
+    expected = 3
+    check_parser(raw_formula, expected, capsys)
 
-def test_multiplication_exponential_negative_exponential_negative_exponential(capsys):
-    raw_formula = "3 * 9^-2 ^ -1 ^ -2"
-    expected = 3 * 9 ** -2 ** -1 ** -2
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
+@pytest.mark.ast
+def test_exponential_negative_exponential(capsys):
+    raw_formula = "3^3^2*2"
+    expected = (3**9)*2
+    check_parser(raw_formula, expected, capsys)
+
+# @pytest.mark.ast
+# def test_exponential_negative_exponential(capsys):
+#     raw_formula = "9^-2"
+#     expected = (3**9)*2
+#     check_parser(raw_formula, expected, capsys)
+
+# def test_multiplication_exponential_negative_exponential_negative_exponential(capsys):
+#     raw_formula = "3 * 9^-2 ^ -1 ^ -2"
+#     expected = (3**9)*2
+#     check_parser(raw_formula, expected, capsys)
 
 def test_factorial(capsys):
     raw_formula = "4!"
     expected = factorial(4)
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_factorial(capsys):
     raw_formula = "4!!"
     expected = factorial(factorial(4))
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_factorial_complex(capsys):
     raw_formula = "-4!^3!"
     expected = -factorial(4) ** factorial(3)
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_factorial_parenthesis(capsys):
     raw_formula = "(2 + 1)!"
     expected = 6
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_empty(capsys):
     raw_formula = ""
     expected = ""
-    assert expected == calcparser.parse(raw_formula)
-    out, err = capsys.readouterr()
-    assert err == ""
-
+    check_parser(raw_formula, expected, capsys)
+    
+@pytest.mark.ast
 def test_function(capsys):
     raw_formula = "{sin$1}(0)"
-    expected = 0
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
-    out, err = capsys.readouterr()
-    assert err == ""
-
-
-def test_minus_function(capsys):
-    raw_formula = "{sin$1} - {pi$0} "
-    expected = 0
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
-    out, err = capsys.readouterr()
-    assert err == ""
-
-def test_function_1_function_1(capsys):
-    raw_formula = "{cos$1} {sin$1} 0"
-    expected = 1
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
-    out, err = capsys.readouterr()
-    assert err == ""
-
-def test_functions_parenthesis(capsys):
-    raw_formula = "{cos$1} (({cos$1} - {pi$0})*{pi$0})"
-    expected = -1
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
-    out, err = capsys.readouterr()
-    assert err == ''
     
 
+
+@pytest.mark.ast
+def test_minus_function(capsys):
+    raw_formula = "{sin$1} - {pi$0} "
+    
+
+@pytest.mark.ast
+def test_function_1_function_1(capsys):
+    raw_formula = "{cos$1} {sin$1} 0"
+    
+
+@pytest.mark.ast
+def test_functions_parenthesis(capsys):
+    raw_formula = "{cos$1} (({cos$1} - {pi$0})*{pi$0})"
+    check_parser(raw_formula, expected, capsys)
+    expected = -1
+    
+
+@pytest.mark.ast
 def test_define_function_0(capsys):
     raw_formula = "{hello$0} = 5"
     expected = 5
-    assert abs(expected - calcparser.parse(raw_formula)) < 0.00001
-    out, err = capsys.readouterr()
-    assert err == ''
-
+    check_parser(raw_formula, expected, capsys)
+    
+# def test__identifier(capsys):
+#     raw_formula = 'b = 7'
+#     calcparser.parse(raw_formula)
+#     assert calcparse.identifiers['b'] == 7
 
 def test_use_defined_function_0(capsys):
     data = [
@@ -253,4 +317,4 @@ def test_use_defined_function_0(capsys):
         "  @exit"
         ]
     expected = [10, 7]
-    multiline_calc(data, expected, capsys)
+    check_multiline_calc(data, expected, capsys)

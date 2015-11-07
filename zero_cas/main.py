@@ -1,5 +1,6 @@
 from orders import OrderToken
 from calcparse import calcparser
+from simplify import simplify
 
 class App:
     def __init__(self, input_method, output_method):
@@ -32,7 +33,7 @@ class App:
             else:
                 self.raw_calc_input.append(inp)
                 self.processed_calc_input.append(self.preprocess(inp))
-                self.calc_output.append(calcparser.parse(self.processed_calc_input[-1]))
+                self.calc_output.append(simplify(calcparser.parse(self.processed_calc_input[-1])))
 
     def preprocess(self, raw_line):
         return raw_line
