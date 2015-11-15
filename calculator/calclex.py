@@ -10,6 +10,7 @@ literals = (
         "(",
         ")",
         "=",
+        ",",
         )
 
 tokens = (
@@ -17,6 +18,7 @@ tokens = (
         "IDENTIFIER",
         "FUNCTION_0",
         "FUNCTION_1",
+        "FUNCTION_MULTI",
         )
 
 def t_FUNCTION_0(t):
@@ -28,6 +30,12 @@ def t_FUNCTION_1(t):
     r"\{[a-zA-Z_][a-zA-Z0-9_]*\$1\}"
     t.value = t.value[1:len(t.value)-3]
     return t
+
+def t_FUNCTION_MULTI(t):
+    r"\{[a-zA-Z_][a-zA-Z0-9_]*\$\+\}"
+    t.value = t.value[1:len(t.value)-3]
+    return t
+
 
 def t_NUMBER(t):
     r"(\d*\.\d+|\d+)"

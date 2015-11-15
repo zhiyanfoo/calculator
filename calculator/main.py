@@ -8,11 +8,11 @@ class App:
         self.raw_calc_input = list()
         self.processed_calc_input = list()
         self.calc_output = list()
-        self.numeric = True
+        self.decimal = True
         self.keywords = {
-                "exit" : ((0,), self.exit), 
-                "fractional" : ((0,), self.fractional_on),
-                "numeric": ((0,), self.numeric_on),
+                "exit" : ((0,), None), 
+                "integers" : ((0,), self.integer_on),
+                "decimal": ((0,), self.decimal_on),
                 "printall": ((0,), self.printall),
                 "insert" : ((1,), self.insert),
                 "print" : ((0,1), output_method),
@@ -27,8 +27,7 @@ class App:
             if inp_strip[0] == '@':
                 inp_split = inp_strip[1:].split()
                 order = OrderToken(inp_split, self.keywords)
-                should_exit = self.keywords[order.value][1](*order.args)
-                if should_exit == True:
+                if order.value == 'exit':
                     break
             else:
                 self.raw_calc_input.append(inp)
@@ -38,14 +37,11 @@ class App:
     def preprocess(self, raw_line):
         return raw_line
 
-    def exit(self):
-        return True
+    def integer_on(self):
+        self.decimal = False
 
-    def fractional_on(self):
-        pass
-
-    def numeric_on(self):
-        pass
+    def decimal_on(self):
+        self.decimal = True
 
     def printall(self):
         self.keywords['print'][1](self.calc_output, range(0, len(self.calc_output)))

@@ -109,6 +109,25 @@ def test_function_assignment(lexer):
     ]
     assert expected == totoklist(raw_formula, lexer)
 
+def test_function_assignment(lexer):
+    raw_formula = '{ant$+}(x,y) = (12.51, 1)'
+
+    expected = [
+        ['FUNCTION_MULTI', 'ant', 0],
+        ['(', '(', 7],
+        ['IDENTIFIER', 'x', 8],
+        [',', ',', 9],
+        ['IDENTIFIER', 'y', 10],
+        [')', ')', 11],
+        ['=', '=', 13],
+        ['(', '(', 15],
+        ['NUMBER', 12.51, 16],
+        [',', ',', 21],
+        ['NUMBER', 1.0, 23],
+        [')', ')', 24],
+    ]
+    assert expected == totoklist(raw_formula, lexer)
+
 
 def tokensaslist(tokens):
     for i in tokens:
