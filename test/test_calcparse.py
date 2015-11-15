@@ -2,10 +2,10 @@ import sys
 sys.path.append(".") 
 sys.path.append("..") 
 sys.path.append("../calculator")
-# import pytest
+import pytest
 
-# import calcparse
-# from calcparse import calcparser
+import calcparse
+from calcparse import calcparser
 
 # from math import factorial
 # from helper import DataInputMethod, DataOutputMethod, check_parser, check_multiline_calc
