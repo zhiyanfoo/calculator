@@ -1,62 +1,123 @@
 Created by PLY version 3.6 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    FUNCTION_MULTI
+    FUNCTION_1
+    FUNCTION_0
+    IDENTIFIER
+
 Grammar
 
 Rule 0     S' -> statement
-Rule 1     statement -> IDENTIFIER ASSIGN expression
-Rule 2     statement -> FUNCTION_0 ASSIGN expression
-Rule 3     statement -> expression
-Rule 4     statement -> empty
-Rule 5     expression -> expression PLUS factor
-Rule 6     expression -> expression MINUS factor
-Rule 7     expression -> factor
-Rule 8     factor -> LPAREN expression RPAREN
-Rule 9     factor -> factor TIMES term
-Rule 10    factor -> factor DIVIDE term
-Rule 11    factor -> term
-Rule 12    term -> LPAREN expression RPAREN
-Rule 13    term -> FUNCTION_1 term
-Rule 14    term -> MINUS unary
-Rule 15    term -> unary
-Rule 16    unary -> LPAREN expression RPAREN
-Rule 17    unary -> exponential
-Rule 18    exponential -> LPAREN expression RPAREN
-Rule 19    exponential -> factorial EXPONENT term
-Rule 20    exponential -> factorial FACTORIAL
-Rule 21    exponential -> factorial
-Rule 22    factorial -> factorial FACTORIAL
-Rule 23    factorial -> LPAREN expression RPAREN
-Rule 24    factorial -> NUMBER
-Rule 25    factorial -> IDENTIFIER
-Rule 26    factorial -> FUNCTION_0
-Rule 27    factorial -> FUNCTION_1
-Rule 28    empty -> <empty>
+Rule 1     statement -> expression
+Rule 2     expression -> expression + expression
+Rule 3     expression -> expression - expression
+Rule 4     expression -> NUMBER
 
 Terminals, with rules where they appear
 
-FUNCTION_0           : 2 26
-FUNCTION_1           : 13 27
-IDENTIFIER           : 1 25
-NUMBER               : 24
++                    : 2
+-                    : 3
+FUNCTION_0           : 
+FUNCTION_1           : 
+FUNCTION_MULTI       : 
+IDENTIFIER           : 
+NUMBER               : 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-ASSIGN               : 1 2
-DIVIDE               : 10
-EXPONENT             : 19
-FACTORIAL            : 20 22
-LPAREN               : 8 12 16 18 23
-MINUS                : 6 14
-PLUS                 : 5
-RPAREN               : 8 12 16 18 23
-TIMES                : 9
-empty                : 4
-exponential          : 17
-expression           : 1 2 3 5 6 8 12 16 18 23
-factor               : 5 6 7 9 10
-factorial            : 19 20 21 22
+expression           : 1 2 2 3 3
 statement            : 0
-term                 : 9 10 11 13 19
-unary                : 14 15
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statement
+    (1) statement -> . expression
+    (2) expression -> . expression + expression
+    (3) expression -> . expression - expression
+    (4) expression -> . NUMBER
+
+    NUMBER          shift and go to state 3
+
+    statement                      shift and go to state 1
+    expression                     shift and go to state 2
+
+state 1
+
+    (0) S' -> statement .
+
+
+
+state 2
+
+    (1) statement -> expression .
+    (2) expression -> expression . + expression
+    (3) expression -> expression . - expression
+
+    $end            reduce using rule 1 (statement -> expression .)
+    +               shift and go to state 4
+    -               shift and go to state 5
+
+
+state 3
+
+    (4) expression -> NUMBER .
+
+    +               reduce using rule 4 (expression -> NUMBER .)
+    -               reduce using rule 4 (expression -> NUMBER .)
+    $end            reduce using rule 4 (expression -> NUMBER .)
+
+
+state 4
+
+    (2) expression -> expression + . expression
+    (2) expression -> . expression + expression
+    (3) expression -> . expression - expression
+    (4) expression -> . NUMBER
+
+    NUMBER          shift and go to state 3
+
+    expression                     shift and go to state 6
+
+state 5
+
+    (3) expression -> expression - . expression
+    (2) expression -> . expression + expression
+    (3) expression -> . expression - expression
+    (4) expression -> . NUMBER
+
+    NUMBER          shift and go to state 3
+
+    expression                     shift and go to state 7
+
+state 6
+
+    (2) expression -> expression + expression .
+    (2) expression -> expression . + expression
+    (3) expression -> expression . - expression
+
+    +               reduce using rule 2 (expression -> expression + expression .)
+    -               reduce using rule 2 (expression -> expression + expression .)
+    $end            reduce using rule 2 (expression -> expression + expression .)
+
+  ! +               [ shift and go to state 4 ]
+  ! -               [ shift and go to state 5 ]
+
+
+state 7
+
+    (3) expression -> expression - expression .
+    (2) expression -> expression . + expression
+    (3) expression -> expression . - expression
+
+    +               reduce using rule 3 (expression -> expression - expression .)
+    -               reduce using rule 3 (expression -> expression - expression .)
+    $end            reduce using rule 3 (expression -> expression - expression .)
+
+  ! +               [ shift and go to state 4 ]
+  ! -               [ shift and go to state 5 ]
 

@@ -7,6 +7,10 @@ identifiers = dict()
 functions_0 = { 'pi': math.pi }
 functions_1 =  { 'sin' : math.sin, 'cos' : math.cos }
 
+precedence = (
+    ('left','+', '-'),
+    )
+
 # def p_assign_expression(p):
 #     'statement : IDENTIFIER ASSIGN expression'
 #     identifiers[p[1]] = p[3]
@@ -17,9 +21,21 @@ functions_1 =  { 'sin' : math.sin, 'cos' : math.cos }
 #     functions[0][p[1]] = p[3]
 #     p[0] = p[3]
 
-# def p_statement(p):
-#     'statement : expression'
-#     p[0] = p[1]
+def p_statement_expression(p):
+    'statement : expression'
+    p[0] = p[1]
+
+def p_expression_binop(p):
+    """expression : expression '+' expression
+                  | expression '-' expression"""
+    if p[2] == '+'   : p[0] = ('PLUS', p[1], p[3])
+    elif p[2] == '-' : p[0] = ('MINUS', p[1], p[3])
+    # elif p[1] == '*' : p[0] + ('MINUS', p[1], p[3])
+
+def p_expression_number(p):
+    'expression : NUMBER'
+    p[0] = p[1]
+
 
 # def p_statement_empty(p):
 #     'statement : empty'

@@ -1,6 +1,7 @@
 import sys
 sys.path.append("../calculator")
 from main import App
+from calcparse import calcparser
 
 class DataInputMethod:
     def __init__(self, data):
@@ -20,7 +21,7 @@ class DataOutputMethod:
             self.output.append(calc_output[i])
 
 def check_parser(data, expected, capsys):
-    assert expected == calcparser.parse(raw_formula)
+    assert expected == calcparser.parse(data)
     out, err = capsys.readouterr()
     assert err == ""
 

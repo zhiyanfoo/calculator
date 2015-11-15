@@ -7,16 +7,16 @@ import pytest
 import calcparse
 from calcparse import calcparser
 
-# from math import factorial
-# from helper import DataInputMethod, DataOutputMethod, check_parser, check_multiline_calc
-# from simplify import simplify
+from math import factorial
+from helper import DataInputMethod, DataOutputMethod, check_parser, check_multiline_calc
+from simplify import simplify
 
 
-# @pytest.mark.ast
-# def test_ast_number(capsys):
-#     raw_formula = '7'
-#     expected = 7
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_number(capsys):
+    raw_formula = '7'
+    expected = 7
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_number(capsys):
@@ -25,11 +25,11 @@ from calcparse import calcparser
 #     assert expected == simplify(abstract_syntax_tree)
 
 
-# @pytest.mark.ast
-# def test_ast_addition(capsys):
-#     raw_formula = "3 + 4"
-#     expected = ('PLUS', 3, 4)
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_addition(capsys):
+    raw_formula = "3 + 4"
+    expected = ('PLUS', 3, 4)
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_addition(capsys):
@@ -37,11 +37,11 @@ from calcparse import calcparser
 #     expected = 7
 #     assert simplify(abstract_syntax_tree) = expected
 
-# @pytest.mark.ast
-# def test_ast_subtraction(capsys):
-#     raw_formula = "4 - 3"
-#     expected = ("MINUS", 4, 3)
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_subtraction(capsys):
+    raw_formula = "4 - 3"
+    expected = ("MINUS", 4, 3)
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_subtraction(capsys):
@@ -49,11 +49,11 @@ from calcparse import calcparser
 #     expected = 1
 #     assert simplify(abstract_syntax_tree) = expected
 
-# @pytest.mark.ast
-# def test_ast_subtraction_subtraction(capsys):
-#     raw_formula = "4 - 3 - 10"
-#     expected = ("MINUS",  ("MINUS", 4, 3), 10)
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_subtraction_subtraction(capsys):
+    raw_formula = "4 - 3 - 10"
+    expected = ("MINUS",  ("MINUS", 4, 3), 10)
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_subtraction_subtraction(capsys):
