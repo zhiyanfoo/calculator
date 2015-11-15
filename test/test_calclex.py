@@ -9,20 +9,30 @@ import ply.lex as lex
 def lexer():
     return lex.lex(module=calclex)
 
+def test_numbers(lexer):
+    raw_formula = '12.123 * .1234'
+
+    expected = [
+        ['NUMBER', 12.123, 0],
+        ['*', '*', 7],
+        ['NUMBER', 0.1234, 9],
+    ]
+
+    assert expected == totoklist(raw_formula, lexer)
 
 def test_add_sub_mul_unminus(lexer):
     raw_formula = '3 + 4 * 10  + -20 *2'
 
     expected = [
         ['NUMBER', 3, 0],
-        ['PLUS', '+', 2],
+        ['+', '+', 2],
         ['NUMBER', 4, 4],
-        ['TIMES', '*', 6],
+        ['*', '*', 6],
         ['NUMBER', 10, 8],
-        ['PLUS', '+', 12],
-        ['MINUS', '-', 14],
+        ['+', '+', 12],
+        ['-', '-', 14],
         ['NUMBER', 20, 15],
-        ['TIMES', '*', 18],
+        ['*', '*', 18],
         ['NUMBER', 2, 19],
     ]
 
@@ -32,20 +42,20 @@ identifier_assignment_data = (
         ('x = 4 * 100',
         [
             ['IDENTIFIER', 'x', 0],
-            ['ASSIGN', '=', 2],
+            ['=', '=', 2],
             ['NUMBER', 4, 4],
-            ['TIMES', '*', 6],
+            ['*', '*', 6],
             ['NUMBER', 100, 8]
         ]
         ),
         ('h_l1238 = 12/3 + 2',
             [
                 ['IDENTIFIER', 'h_l1238', 0],
-                ['ASSIGN', '=', 8], 
+                ['=', '=', 8], 
                 ['NUMBER', 12, 10],
-                ['DIVIDE', '/', 12],
+                ['/', '/', 12],
                 ['NUMBER', 3, 13],
-                ['PLUS', '+', 15],
+                ['+', '+', 15],
                 ['NUMBER', 2, 17]
             ]
         )
@@ -59,12 +69,12 @@ def test_factorial(lexer):
 
     expected = [
         ['NUMBER', 3, 0],
-        ['FACTORIAL', '!', 1],
+        ['!', '!', 1],
     ]
 
     assert expected == totoklist(raw_formula, lexer)
 
-def test_invalid_variable(lexer):
+def test_multivariable(lexer):
     raw_formula = 'he'
 
     expected = [
@@ -89,13 +99,13 @@ def test_function_assignment(lexer):
     expected = [
         ['FUNCTION_1', 'sin', 0],
         ['IDENTIFIER', 'x', 7],
-        ['ASSIGN', '=', 9],
+        ['=', '=', 9],
         ['FUNCTION_0', 'xo', 11],
-        ['LPAREN', '(', 17],
+        ['(', '(', 17],
         ['IDENTIFIER', 'x', 18],
-        ['MINUS', '-', 20],
+        ['-', '-', 20],
         ['IDENTIFIER', 'a', 22],
-        ['RPAREN', ')', 23],
+        [')', ')', 23],
     ]
     assert expected == totoklist(raw_formula, lexer)
 
