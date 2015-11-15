@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..") 
-sys.path.append("../zero_cas")
+sys.path.append("../calculator")
 import pytest
 import orders
 import main

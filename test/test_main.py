@@ -1,7 +1,7 @@
 import sys
 sys.path.append(".") 
 sys.path.append("..") 
-sys.path.append("../zero_cas")
+sys.path.append("../calculator")
 import pytest
 from main import App
 from helper import DataInputMethod, DataOutputMethod, multiline_calc
