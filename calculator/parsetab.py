@@ -5,9 +5,9 @@ _tabversion = '3.5'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BAB86073630AD7F555DD9C37C3EC2618'
+_lr_signature = '40D54EFBE85C918E5F0F89F0BDBB8366'
     
-_lr_action_items = {'+':([2,3,6,7,],[4,-4,-2,-3,]),'NUMBER':([0,4,5,],[3,3,3,]),'$end':([1,2,3,6,7,],[0,-1,-4,-2,-3,]),'-':([2,3,6,7,],[5,-4,-2,-3,]),}
+_lr_action_items = {'*':([2,5,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,11,-14,-11,-8,11,-7,11,-4,11,-5,-6,11,-12,-10,]),'^':([2,5,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,14,-14,14,-8,14,14,14,14,14,14,14,14,-12,-10,]),'DEFINED_CONSTANT':([0,3,6,7,10,11,12,13,14,16,],[2,2,2,2,2,2,2,2,2,2,]),'$end':([0,1,2,4,5,8,9,15,18,20,21,22,23,24,25,26,],[-15,-9,-13,0,-1,-14,-11,-8,-7,-4,-3,-5,-6,-2,-12,-10,]),')':([2,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,-14,-11,-8,25,-7,26,-4,-3,-5,-6,-2,-12,-10,]),'FUNCTION_1':([0,3,6,7,10,11,12,13,14,16,],[3,3,3,3,3,3,3,3,3,3,]),'!':([2,5,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,15,-14,-11,-8,15,15,15,15,15,15,-6,15,-12,-10,]),'(':([0,3,6,7,10,11,12,13,14,16,],[6,10,6,6,6,6,6,6,6,6,]),'/':([2,5,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,13,-14,-11,-8,13,-7,13,-4,13,-5,-6,13,-12,-10,]),'-':([0,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,],[7,-13,7,12,7,7,-14,-11,7,7,7,7,7,-8,7,12,-7,12,-4,-3,-5,-6,-2,-12,-10,]),'NUMBER':([0,3,6,7,10,11,12,13,14,16,],[8,8,8,8,8,8,8,8,8,8,]),'+':([2,5,8,9,15,17,18,19,20,21,22,23,24,25,26,],[-13,16,-14,-11,-8,16,-7,16,-4,-3,-5,-6,-2,-12,-10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,4,5,],[2,6,7,]),}
+_lr_goto_items = {'expression':([0,3,6,7,10,11,12,13,14,16,],[5,9,17,18,19,20,21,22,23,24,]),'empty':([0,],[1,]),'statement':([0,],[4,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,8 +26,19 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expression','statement',1,'p_statement_expression','calcparse.py',25),
-  ('expression -> expression + expression','expression',3,'p_expression_binop','calcparse.py',29),
-  ('expression -> expression - expression','expression',3,'p_expression_binop','calcparse.py',30),
-  ('expression -> NUMBER','expression',1,'p_expression_number','calcparse.py',36),
+  ('statement -> expression','statement',1,'p_statement_expression','calcparse.py',30),
+  ('expression -> expression + expression','expression',3,'p_expression_binop','calcparse.py',34),
+  ('expression -> expression - expression','expression',3,'p_expression_binop','calcparse.py',35),
+  ('expression -> expression * expression','expression',3,'p_expression_binop','calcparse.py',36),
+  ('expression -> expression / expression','expression',3,'p_expression_binop','calcparse.py',37),
+  ('expression -> expression ^ expression','expression',3,'p_expression_binop','calcparse.py',38),
+  ('expression -> - expression','expression',2,'p_expression_negative','calcparse.py',48),
+  ('expression -> expression !','expression',2,'p_expression_postfix','calcparse.py',52),
+  ('statement -> empty','statement',1,'p_statement_empty','calcparse.py',56),
+  ('expression -> FUNCTION_1 ( expression )','expression',4,'p_expression_function_1_paren','calcparse.py',60),
+  ('expression -> FUNCTION_1 expression','expression',2,'p_expression_function_1','calcparse.py',64),
+  ('expression -> ( expression )','expression',3,'p_expression_parenthesis','calcparse.py',68),
+  ('expression -> DEFINED_CONSTANT','expression',1,'p_expression_defined_constant','calcparse.py',72),
+  ('expression -> NUMBER','expression',1,'p_expression_number','calcparse.py',76),
+  ('empty -> <empty>','empty',0,'p_empty','calcparse.py',141),
 ]

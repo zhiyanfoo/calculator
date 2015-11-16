@@ -1,8 +1,8 @@
 import ply.lex as lex
 
 literals = (
-        '+',
-        '-',
+        "+",
+        "-",
         "*",
         "/",
         "^",
@@ -16,14 +16,14 @@ literals = (
 tokens = (
         "NUMBER", 
         "IDENTIFIER",
-        "FUNCTION_0",
+        "DEFINED_CONSTANT",
         "FUNCTION_1",
         "FUNCTION_MULTI",
         )
 
-def t_FUNCTION_0(t):
-    r"\{[a-zA-Z_][a-zA-Z0-9_]*\$0\}"
-    t.value = t.value[1:len(t.value)-3]
+def t_DEFINED_CONSTANT(t):
+    r"\{\#[a-zA-Z_][a-zA-Z0-9_]*\}"
+    t.value = t.value[2:len(t.value)-1]
     return t
 
 def t_FUNCTION_1(t):

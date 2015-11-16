@@ -128,6 +128,15 @@ def test_function_assignment(lexer):
     ]
     assert expected == totoklist(raw_formula, lexer)
 
+def test_defined_constant_assignment(lexer):
+    raw_formula = '{#ant} = 1'
+
+    expected = [
+        ['DEFINED_CONSTANT', 'ant', 0],
+        ['=', '=', 7],
+        ['NUMBER', 1, 9],
+    ]
+    assert expected == totoklist(raw_formula, lexer)
 
 def tokensaslist(tokens):
     for i in tokens:

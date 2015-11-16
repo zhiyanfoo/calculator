@@ -4,13 +4,18 @@ import math
 
 identifiers = dict()
 
-functions_0 = { 'pi': math.pi }
+defined_constants = { 'pi': math.pi , 'gravitational_constant' : 9.81}
 functions_1 =  { 'sin' : math.sin, 'cos' : math.cos }
 
 precedence = (
-    ('left','+', '-'),
+    ('left', '+', '-'),
+    ('left', '*', '/'),
+    ('right', 'NEGATIVE'),
+    ('left', '!'),
+    ('left', 'FUNCTION_1'),
+    ('right', '^'),
+    ('left', "FUNCTION_PAREN"),
     )
-
 # def p_assign_expression(p):
 #     'statement : IDENTIFIER ASSIGN expression'
 #     identifiers[p[1]] = p[3]
@@ -27,52 +32,49 @@ def p_statement_expression(p):
 
 def p_expression_binop(p):
     """expression : expression '+' expression
-                  | expression '-' expression"""
-    if p[2] == '+'   : p[0] = ('PLUS', p[1], p[3])
+                  | expression '-' expression
+                  | expression '*' expression
+                  | expression '/' expression
+                  | expression '^' expression"""
+    if   p[2] == '+'   : p[0] = ('PLUS', p[1], p[3])
     elif p[2] == '-' : p[0] = ('MINUS', p[1], p[3])
-    # elif p[1] == '*' : p[0] + ('MINUS', p[1], p[3])
+    elif p[2] == '*' : p[0] = ('TIMES', p[1], p[3])
+    elif p[2] == '/' : p[0] = ('DIVIDE', p[1], p[3])
+    elif p[2] == '^' : p[0] = ('POWER', p[1], p[3])
+
+
+
+def p_expression_negative(p):
+    "expression : '-' expression %prec NEGATIVE" 
+    p[0] = ('NEGATIVE', p[2])
+
+def p_expression_postfix(p):
+    "expression : expression '!'" 
+    p[0] = ('FACTORIAL', p[1])
+
+def p_statement_empty(p):
+    'statement : empty'
+    p[0] = p[1]
+
+def p_expression_function_1_paren(p):
+    "expression : FUNCTION_1 '(' expression ')' %prec FUNCTION_PAREN"
+    p[0] = ("FUNCTION", p[1], p[3])
+
+def p_expression_function_1(p):
+    "expression : FUNCTION_1  expression"
+    p[0] = ("FUNCTION", p[1], p[2])
+
+def p_expression_parenthesis(p):
+    "expression : '(' expression ')'"
+    p[0] = p[2]
+
+def p_expression_defined_constant(p):
+    "expression : DEFINED_CONSTANT"
+    p[0] = defined_constants[p[1]]
 
 def p_expression_number(p):
     'expression : NUMBER'
     p[0] = p[1]
-
-
-# def p_statement_empty(p):
-#     'statement : empty'
-#     p[0] = p[1]
-
-# def p_expression_plus(p):
-#     'expression : expression PLUS factor'
-#     p[0] = p[1] + p[3]
-
-# def p_expression_minus(p):
-#     'expression : expression MINUS factor'
-#     p[0] = p[1] - p[3]
-
-# def p_expression_factor(p):
-#     'expression : factor'
-#     p[0] = p[1]
-
-# def p_factor_parenthesis(p):
-#     'factor : LPAREN expression RPAREN'
-#     p[0] = p[2]
-
-# def p_factor_multiplication(p):
-#     'factor : factor TIMES term'
-#     p[0] = p[1] * p[3]
-    
-# def p_factor_divide(p):
-#     'factor : factor DIVIDE term'
-#     p[0] = p[1] / p[3]
-
-# def p_factor_term(p):
-#     'factor : term'
-#     p[0] = p[1]
-
-# def p_term_parenthesis(p):
-#     'term : LPAREN expression RPAREN'
-#     p[0] = p[2]
-
 
 # def p_term_function_unary(p):
 #     'term : FUNCTION_1 term'
@@ -135,8 +137,8 @@ def p_expression_number(p):
 #     'factorial : FUNCTION_1'
 #     p[0] = functions[1][p[1]]()
 
-# def p_empty(p):
-#     'empty :'
-#     p[0] = ""
+def p_empty(p):
+    'empty :'
+    p[0] = ""
 
 calcparser = yacc.yacc()
