@@ -343,11 +343,11 @@ def test_ast_minus_function(capsys):
 #     expected = 0
 #     assert simplify(abstract_syntax_tree) = expected
 
-# @pytest.mark.ast
-# def test_ast_function_1_function_1(capsys):
-#     raw_formula = "{cos$1} {sin$1} 0"
-#     expected = ("FUNCTION", 'cos', ("FUNCTION", 'sin', 0))
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_function_1_function_1(capsys):
+    raw_formula = "{cos$1} {sin$1} 0"
+    expected = ("FUNCTION", 'cos', ("FUNCTION", 'sin', 0))
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_function_1_function_1(capsys):
@@ -355,11 +355,11 @@ def test_ast_minus_function(capsys):
 #     expected = 1
 #     assert simplify(abstract_syntax_tree) = expected
 
-# @pytest.mark.ast
-# def test_ast_functions_parenthesis(capsys):
-#     raw_formula = "{cos$1} (({cos$1} - {pi$0})*{pi$0})"
-#     expected = ("FUNCTION", 'cos', ("TIMES", ("FUNCTION", 'cos', ("NEGATIVE", 'pi')), pi))
-#     check_parser(raw_formula, expected, capsys)
+@pytest.mark.ast
+def test_ast_functions_parenthesis(capsys):
+    raw_formula = "{cos$1} (({cos$1} - {#constant})*{#constant})"
+    expected = ("FUNCTION", 'cos', ("TIMES", ("FUNCTION", 'cos', ("NEGATIVE", 1)), 1))
+    check_parser(raw_formula, expected, capsys)
 
 # @pytest.mark.simplify
 # def test_functions_parenthesis(capsys):

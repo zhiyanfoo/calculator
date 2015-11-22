@@ -4,7 +4,7 @@ import math
 
 identifiers = dict()
 
-defined_constants = { 'pi': math.pi , 'gravitational_constant' : 9.81}
+defined_constants = { 'pi': math.pi , 'gravitational_constant' : 9.81, 'constant' : 1 }
 functions_1 =  { 'sin' : math.sin, 'cos' : math.cos }
 
 precedence = (
