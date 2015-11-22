@@ -8,7 +8,7 @@ import calcparse
 from calcparse import calcparser
 
 from math import factorial
-from helper import DataInputMethod, DataOutputMethod, check_parser, check_multiline_calc
+from helper import DataInputMethod, DataOutputMethod, check_parser, check_errmsg,check_multiline_calc
 from simplify import simplify
 
 
@@ -332,7 +332,7 @@ def test_ast_function(capsys):
     
 @pytest.mark.ast
 def test_ast_minus_function(capsys):
-    raw_formula = "{sin$1} - {#gravitational_constant}"
+    raw_formula = "{sin$1} - gravitational_constant"
     expected = ("FUNCTION", 'sin', ("NEGATIVE", 9.81))
     check_parser(raw_formula, expected, capsys)
 
@@ -355,9 +355,10 @@ def test_ast_function_1_function_1(capsys):
 #     expected = 1
 #     assert simplify(abstract_syntax_tree) = expected
 
+
 @pytest.mark.ast
 def test_ast_functions_parenthesis(capsys):
-    raw_formula = "{cos$1} (({cos$1} - {#constant})*{#constant})"
+    raw_formula = "{cos$1} (({cos$1} - constant)*constant)"
     expected = ("FUNCTION", 'cos', ("TIMES", ("FUNCTION", 'cos', ("NEGATIVE", 1)), 1))
     check_parser(raw_formula, expected, capsys)
 
@@ -400,3 +401,11 @@ def test_ast_functions_parenthesis(capsys):
 #         ]
 #     expected = [10, 7]
 #     check_multiline_calc(data, expected, capsys)
+
+def test_error(capsys):
+    raw_formula = "{cos$1} (({cos$1} - &constant)*@constant)"
+    errmsg = \
+            """Illegal character '&'
+Illegal character '@'
+"""
+    check_errmsg(raw_formula, errmsg, capsys)

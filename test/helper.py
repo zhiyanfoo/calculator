@@ -25,6 +25,11 @@ def check_parser(data, expected, capsys):
     out, err = capsys.readouterr()
     assert err == ""
 
+def check_errmsg(data, errmsg, capsys):
+    calcparser.parse(data)
+    out, err = capsys.readouterr()
+    print(err)
+    assert err == errmsg
 
 def check_multiline_calc(data, expected, capsys):
     output = DataOutputMethod()

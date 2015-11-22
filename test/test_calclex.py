@@ -7,7 +7,7 @@ import ply.lex as lex
 
 @pytest.fixture(scope='module')
 def lexer():
-    return lex.lex(module=calclex)
+    return lex.lex(module=calclex, debug=True)
 
 def test_numbers(lexer):
     raw_formula = '12.123 * .1234'
@@ -78,8 +78,7 @@ def test_multivariable(lexer):
     raw_formula = 'he'
 
     expected = [
-        ['IDENTIFIER', 'h', 0],
-        ['IDENTIFIER', 'e', 1]
+        ['IDENTIFIER', 'he', 0],
     ]
 
     assert expected == totoklist(raw_formula, lexer)
@@ -128,15 +127,19 @@ def test_function_assignment(lexer):
     ]
     assert expected == totoklist(raw_formula, lexer)
 
-def test_defined_constant_assignment(lexer):
-    raw_formula = '{#ant} = 1'
+def test_error(lexer, capsys):
+    raw_formula = "{cos$1} (({cos$1} - {#constant})*{#constant})"
+    totoklist(raw_formula, lexer)
+    out, err = capsys.readouterr()
+    assert err == \
+"""Illegal character '{'
+Illegal character '#'
+Illegal character '}'
+Illegal character '{'
+Illegal character '#'
+Illegal character '}'
+"""
 
-    expected = [
-        ['DEFINED_CONSTANT', 'ant', 0],
-        ['=', '=', 7],
-        ['NUMBER', 1, 9],
-    ]
-    assert expected == totoklist(raw_formula, lexer)
 
 def tokensaslist(tokens):
     for i in tokens:

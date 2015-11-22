@@ -2,9 +2,7 @@ import ply.yacc as yacc
 from calclex import tokens
 import math 
 
-identifiers = dict()
-
-defined_constants = { 'pi': math.pi , 'gravitational_constant' : 9.81, 'constant' : 1 }
+identifiers = { 'pi': math.pi , 'gravitational_constant' : 9.81, 'constant' : 1 }
 functions_1 =  { 'sin' : math.sin, 'cos' : math.cos }
 
 precedence = (
@@ -68,13 +66,14 @@ def p_expression_parenthesis(p):
     "expression : '(' expression ')'"
     p[0] = p[2]
 
-def p_expression_defined_constant(p):
-    "expression : DEFINED_CONSTANT"
-    p[0] = defined_constants[p[1]]
-
 def p_expression_number(p):
     'expression : NUMBER'
     p[0] = p[1]
+
+def p_expression_identifier(p):
+    'expression : IDENTIFIER'
+    p[0] = identifiers[p[1]]
+
 
 # def p_term_function_unary(p):
 #     'term : FUNCTION_1 term'
@@ -141,4 +140,4 @@ def p_empty(p):
     'empty :'
     p[0] = ""
 
-calcparser = yacc.yacc()
+calcparser = yacc.yacc(debug=True)

@@ -1,4 +1,5 @@
 import ply.lex as lex
+import sys
 
 literals = (
         "+",
@@ -16,14 +17,12 @@ literals = (
 tokens = (
         "NUMBER", 
         "IDENTIFIER",
-        "DEFINED_CONSTANT",
         "FUNCTION_1",
         "FUNCTION_MULTI",
         )
 
-def t_DEFINED_CONSTANT(t):
-    r"\{\#[a-zA-Z_][a-zA-Z0-9_]*\}"
-    t.value = t.value[2:len(t.value)-1]
+def t_IDENTIFIER(t):
+    r"[a-zA-Z_][a-zA-Z0-9_]*"
     return t
 
 def t_FUNCTION_1(t):
@@ -42,13 +41,10 @@ def t_NUMBER(t):
     t.value = float(t.value)
     return t
 
-def t_IDENTIFIER(t):
-    r"[a-zA-Z_](_[a-zA-Z0-9_]+|[0-9]+)?"
-    return t
 
 t_ignore  = ' \t'
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Illegal character '%s'" % t.value[0], file=sys.stderr)
     t.lexer.skip(1)
 
